@@ -60,7 +60,7 @@ def extract_features(text):
 
 
 def detect_text(tokenizer, model, text):
-    """Classifies input text as AI-generated or human-written."""
+    """Classifies input text as AI-generated or human-written with feature-based adjustment."""
     # Extract features
     features = extract_features(text)
 
@@ -80,6 +80,12 @@ def detect_text(tokenizer, model, text):
     # Get prediction (assuming binary classification: 0 = Human, 1 = AI-generated)
     logits = outputs.logits
     prediction = torch.argmax(logits, dim=1).item()
+
+    # Adjust prediction based on extracted features
+    if features["rare_word_ratio"] < 0.3 and features["avg_word_length"] < 5.0:
+        prediction = 0  # Bias toward Human-written
+    elif features["avg_word_length"] > 6.5 or features["rare_word_ratio"] > 0.5:
+        prediction = 1  # Bias toward AI-generated
 
     # Map prediction to label
     labels = {0: "Human-written", 1: "AI-generated"}
