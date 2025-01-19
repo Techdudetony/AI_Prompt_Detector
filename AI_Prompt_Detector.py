@@ -92,10 +92,23 @@ if __name__ == "__main__":
     # Load model and tokenizer
     tokenizer, model = load_model()
 
-    # Example user input
-    user_input = input("Enter text to classify: ")
+    # Initialize text counter
+    text_counter = 0
 
-    # Detect whether the input text is AI-generated or human-written
-    result = detect_text(tokenizer, model, user_input)
+    while True:
+        text_counter += 1
+        print(f"\nText {text_counter}")
 
-    print(f"The input text is classified as: {result}")
+        # Example user input
+        user_input = input("Enter text to classify: ")
+
+        # Detect whether the input text is AI-generated or human-written
+        result = detect_text(tokenizer, model, user_input)
+
+        print(f"The input text is classified as: {result}")
+
+        # Ask if the user wants to classify another text
+        another = input("\nWould you like to classify another text? (yes/no): ").strip().lower()
+        if another not in ["yes", "y"]:
+            print("Exiting the application. Goodbye!")
+            break
