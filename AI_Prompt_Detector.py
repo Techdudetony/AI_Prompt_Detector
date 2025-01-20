@@ -13,8 +13,8 @@ nltk.download('stopwords')
 # Load pre-trained model and tokenizer
 def load_model():
     """Loads the Hugging Face model and tokenizer."""
-    # You can replace 'roberta-base-openai-detector' with another fine-tuned model
-    model_name = "roberta-base-openai-detector"  # Placeholder for AI detection model
+    # Switching to the "roberta-base-openai-detector" model
+    model_name = "roberta-base-openai-detector"  # Using OpenAI RoBERTa model for AI detection
     
     print("Loading model and tokenizer...")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -60,7 +60,7 @@ def extract_features(text):
 
 
 def detect_text(tokenizer, model, text):
-    """Classifies input text as AI-generated or human-written with feature-based adjustment."""
+    """Classifies input text as AI-generated or human-written with feature-based and logits adjustment."""
     # Extract features
     features = extract_features(text)
 
@@ -79,13 +79,26 @@ def detect_text(tokenizer, model, text):
 
     # Get prediction (assuming binary classification: 0 = Human, 1 = AI-generated)
     logits = outputs.logits
+    print(f"Logits: {logits}")  # Debugging logits output
+
+    # Calculate confidence from logits
+    confidence = torch.softmax(logits, dim=1)
+    ai_confidence = confidence[0, 1].item()
+    print(f"AI Confidence: {ai_confidence}")
+
+    # Adjust prediction based on refined thresholds
     prediction = torch.argmax(logits, dim=1).item()
 
-    # Adjust prediction based on extracted features
-    if features["rare_word_ratio"] < 0.3 and features["avg_word_length"] < 5.0:
-        prediction = 0  # Bias toward Human-written
-    elif features["avg_word_length"] > 6.5 or features["rare_word_ratio"] > 0.5:
-        prediction = 1  # Bias toward AI-generated
+    if ai_confidence > 0.55:  # Adjusted threshold for AI signal
+        prediction = 1  # Strong AI signal
+    elif ai_confidence < 0.45:  # Adjusted threshold for Human signal
+        prediction = 0  # Strong Human signal
+    else:
+        # Use features for refinement in borderline cases
+        if features["rare_word_ratio"] < 0.3 and features["avg_word_length"] < 5.0:
+            prediction = 0  # Bias toward Human-written
+        elif features["avg_word_length"] > 6.5 or features["rare_word_ratio"] > 0.5:
+            prediction = 1  # Bias toward AI-generated
 
     # Map prediction to label
     labels = {0: "Human-written", 1: "AI-generated"}

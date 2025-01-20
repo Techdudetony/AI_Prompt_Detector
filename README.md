@@ -4,25 +4,27 @@ This is a Python Program created to detect whether a prompt is AI generated.
 ## Step 1: Media Type Selection
 
 **Chosen Media Type:** Text
-**Rationale:** I selected text because the patterns present in AI-generated text often distinguishes it from human-generated text.
+
+**Rationale:** I selected text because of the distinguishable patterns that differentiate AI-generated text from human-written text.
 
 ---
 
 ## Step 2: Collected Examples
 
 - **Human Generated Text:**
->1. Hello, I am calling you about your Extended Warranty. It's coming up to being due, and I'd love the opportunity to be able to set you up with an updated new policy! Please give me a call when you receive this message. Thank you!
 
->2. I think Japanese businesses are required by law to exhaust other assets before resorting to layoffs. America would never put such a policy in place.  
+>1. I think it’s really important to stay healthy. Staying healthy is key to a good life.
 
->3. This is how GPT should be used for medical advice. You throw some symptoms and see about it afterwards with a professional doctor. This is a galaxy away from webMD saying cancer every 5 mins. 
+>2. We need to talk about this. We really need to talk about this.  
+
+>3. Yesterday was so strange. I saw a dog chasing a squirrel, and it just made me laugh.
 
 - **AI-generated Text**
->4.	Artificial intelligence has transformed the landscape of modern industries. By automating processes and analyzing massive datasets, AI enables companies to make informed decisions and optimize their operations with unprecedented precision.
+>4.	Artificial intelligence optimizes predictive models, enabling enhanced efficiency, automation, scalability, and unparalleled accuracy in diverse applications.
 
->5.	The ancient castle loomed over the misty valley, its towers disappearing into the clouds. Legends whispered that a dragon guarded the treasure within, but no one who entered had ever returned to tell the tale.
+>5.	By leveraging advanced neural network architectures, generative models produce coherent, contextually accurate outputs for complex natural language processing.
 
->6.	By analyzing vast datasets, AI models are capable of identifying patterns and predicting outcomes with remarkable accuracy, thus revolutionizing predictive analytics.
+>6.	Cutting-edge algorithms facilitate real-time data analysis, streamlining operational workflows, reducing costs, and driving innovative technological advancements.
 
 ## Step 3: Brainstorm Specific Traits with AI
 **Prompt Used:**  
@@ -76,7 +78,7 @@ This is a Python Program created to detect whether a prompt is AI generated.
 2. Generic or vague responses
 3. Overwhelming formality or fake sophistication
 
-**Rationale:** These traits were selected based on their commonality in AI-generated text and their alignment with observable limitations in current AI language models. These were selected after identifying that simpler linguistic patterns (e.g., keyword density or syntax complexity) often failed to distinguish between AI and human-generated text effectively. By focusing on traits like overly formal tones, generic responses, and fake sophistication, this approach targets specific weaknesses of AI systems while reflecting characteristics unlikely to dominate human writing naturally.
+**Rationale:** These traits were selected based on their commonality in AI-generated text and their alignment with observable limitations in current AI language models. These were selected after identifying that simpler linguistic pattern often failed to distinguish between AI and human-generated text effectively. By focusing on traits like overly formal tones, generic responses, and fake sophistication, this approach targets specific weaknesses of AI systems while reflecting characteristics unlikely to dominate human writing naturally.
 
 ---
 
@@ -84,39 +86,46 @@ This is a Python Program created to detect whether a prompt is AI generated.
 
 | **Text** | **Prediction**     | **Actual**          | **Correct?** |
 |----------|--------------------|---------------------|--------------|
-| Text 1   | Human-generated    | AI-generated        | No           |
-| Text 2   | Human-generated    | AI-generated        | No           |
-| Text 3   | Human-generated    | AI-generated        | No           |
-| Text 4   | AI-generated       | Human-generated     | No           |
+| Text 1   | Human-written      | Human-written       | Yes          |
+| Text 2   | Human-written      | Human-written       | Yes          |
+| Text 3   | Human-written      | Human-written       | Yes          |
+| Text 4   | AI-generated       | AI-generated        | Yes          |
 | Text 5   | AI-generated       | AI-generated        | Yes          |
 | Text 6   | AI-generated       | AI-generated        | Yes          |
 
-**Result:** The program correctly identified all six images. The detection based on symmetry, eye alignment, and texture analysis worked effectively. Texture analysis seemed to be the feature that best distinguished between AI-generated images and real human faces.
+**Result:** The program correctly identified all six text prompts that were used for testing. The detector performed effectively by utilizing features such as rare word ratio, average word length, and formal phrasing to distinguish between AI-generated and human-written text. Adjustments with the AI confidence threshold made a huge difference in improving the accuracy for borderline cases. 
 
 ---
 
 ## Step 6: Reflection Report
 
 ### 1. Program Performance:
-- The program was able to distinguish between human and AI-generated faces.  
-- It required significant trial and error and back-and-forth messaging with the AI to reach this point.  
-- Initially, the program struggled with unnatural AI images, labeling all images as either AI or human.  
-- Fine-tuning using symmetry issues, eye alignment, and texture artifacts improved accuracy.  
-- Adjusting thresholds for unnatural symmetry and emphasizing the texture score further enhanced the model's performance.
+- The program successfully distinguished between AI-generated and human-written text.
+- Significant trial and error and back and forth with the AI Large Language Model (LLM) were needed to create a successful program up to this point.
+- Early iterations of the program struggled significantly with borderline cases, leading to all the prompts being labeled as “AI-generated” or “Human-written”.
+- Refining AI confidence thresholds, in addition to analyzing specific text features significantly improved performance.
+
 
 ### 2. Feature Analysis:
-- **Symmetry Issues:** Faces with lower symmetry (a higher symmetry score) were more likely AI-generated. However, most faces—human and AI—were fairly symmetric, making this a less critical feature.
-- **Eye Alignment:** Misaligned eyes were a potential indicator of AI generation but were not significant in the tested images.
-- **Texture Artifacts:** The most important feature for detecting AI images, particularly for distinguishing realistic AI-generated images from human ones.
+- **Rare Word Ratio:** Texts with a higher ratio of rare words tended to be classified as AI-generated due to their overly polished and unnatural vocabulary.
+- **Average Word Length:** Human-written texts exhibited more variability in word length, contrasting with AI's tendency toward uniformity.
+- **Vague or Overly Sophisticated Phrasing:** AI-generated texts frequently exhibited an exaggerated formal tone, which was a key indicator in classification.
+
 
 ### 3. Limitations and Improvements:
-- **Limitations:** The program was tested on only six images, which limits its applicability, especially for high-quality AI images.  
-- **Improvements:** Adding features like color variance or analyzing reflections and shadows could improve detection. Expanding the dataset could enhance accuracy for subtle differences.
+#### Limitations
+- The program was tested on a limited dataset of six text prompts, which restricts generalization to other text styles or domains.
+- Longer texts or prompts outside formal or technical contexts may require additional analysis for accurate detection.
+#### Improvements
+- Expanding the dataset to include diverse text genres could improve the robustness of detection.
+- Incorporating additional linguistic features, such as sentence structure variability or coherence over longer passages, may enhance accuracy for complex texts.
+- Further fine-tuning of the model itself with additional training on AI-generated and human-written text datasets could yield even better results.
+
 
 ---
 
 ## Conclusion
 
-This project deepened my understanding of AI-generated images and detection methods. I was surprised by the importance of texture artifacts in detecting AI images and the program's ability to identify two fairly natural-looking AI images. While the program performed well on this small dataset, future improvements could address its limitations in detecting more sophisticated AI-generated images.
+This project provided valuable insights into the differences between human-written and AI-generated text. I learned a lot about how things as little as the average length of a word within a sentence or prompt can make the difference in AI detection for text. By leveraging text features like rare word ratio, average word length, and vague phrasing, the program effectively identified AI-generated text in test cases. Adjusting confidence thresholds and refining feature-based analysis were critical to the program's success. While the program performed well on this dataset, expanding its scope to include diverse text types and larger datasets will be essential for improving accuracy and scalability. Throughout this project, I developed an appreciation for the complexities of text-based AI detection and its reliance on both computational models and text characteristics to achieve impactful results. 
 
 ---
